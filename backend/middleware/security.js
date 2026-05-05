@@ -1,34 +1,24 @@
 id = "sec01"
 function detectPromptInjection(input) {
-    let score = 0;
-    const patterns = [
-        {
-            keyword: "ignore previous instructions",
-            weight: 3
-        },
-        {
-            keyword: "system prompt",
-            weight: 3
-        },
-        {
-            keyword: "bypass",
-            weight: 2
-        },
-        {
-            keyword: "developer mode",
-            weight: 2
-        },
-        {
-            keyword: "reveal",
-            weight: 2
-        }
-    ];
-    patterns.forEach(pattern => {
-        if (input.toLowerCase().includes(pattern.keyword)) {
-            score += pattern.weight;
-        }
-    });
-    return score;
+  let score = 0;
+  const lower = input.toLowerCase();
+
+  const patterns = [
+    { regex: /ignore.*instruction/i, weight: 3 },
+    { regex: /system prompt/i, weight: 3 },
+    { regex: /bypass/i, weight: 2 },
+    { regex: /developer mode/i, weight: 2 },
+    { regex: /reveal/i, weight: 2 },
+    { regex: /forget.*rules/i, weight: 2 }
+  ];
+
+  patterns.forEach(p => {
+    if (p.regex.test(lower)) {
+      score += p.weight;
+    }
+  });
+
+  return score;
 }
 
 function sanitizeInput(input) {
