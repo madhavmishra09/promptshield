@@ -1,9 +1,9 @@
 id="server01"
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 
-const chatRoute= require('./routes/chatRoute');
+const chatRoute= require('./routes/chat');
 const app = express();
 app.use(cors());
 app.use(express.json());
