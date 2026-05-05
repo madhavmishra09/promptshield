@@ -1,45 +1,29 @@
-const express = require('express');
-const router = express.Router();
-
-const { detectPromptInjection, sanitizeInput } = require('../middleware/security');
-
-// ✅ Official OpenAI SDK
-const OpenAI = require('openai');
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-router.post('/', async (req, res) => {
-  let { message } = req.body;
-
-  let score = detectPromptInjection(message);
-
-  if (score > 3) {
-    message = sanitizeInput(message);
+const express=require('express');
+const router=express.Router();
+const {detectPromptInjection,sanitizeInput}=require('../middleware/security');
+const axios=require('axios');
+router.post("/",async(req,res)=>{
+  let {message} = req.body;
+  let score=detectPromptInjection(message);
+  if(score>3){
+    message=sanitizeInput(message);
   }
-
-  try {
-    const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are a safe and helpful assistant." },
-        { role: "user", content: message }
-      ],
+  try{
+    const response=await axios.post("http://localhost:11434/api/generate",{
+      model:"mistral",
+      prompt:message,
+      stream:false
     });
-
-    let output = response.choices[0].message.content;
-
-    // Output filter
-    if (output.toLowerCase().includes("system prompt")) {
-      output = "⚠️ Response blocked for security reasons.";
+    let output=response.data.response;
+    if(output.toLowerCase().includes("system prompt")){
+      output="Response blocked due to security concerns.";
     }
-
-    res.json({ reply: output });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "API Error" });
+    res.json({response:output});
   }
-});
+  catch(err){
+    console.error(err.message);
+    res.status(500).json({error:"Ollama Error"});
+  }
+})
 
-module.exports = router;
+module.exports=router;
