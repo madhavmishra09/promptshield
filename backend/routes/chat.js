@@ -2,6 +2,7 @@ const express=require('express');
 const router=express.Router();
 const {detectPromptInjection,sanitizeInput}=require('../middleware/security');
 const axios=require('axios');
+const logs=require('../data/logs');
 router.post("/",async(req,res)=>{
   let {message} = req.body;
   let score=detectPromptInjection(message);
@@ -18,6 +19,10 @@ router.post("/",async(req,res)=>{
     if(output.toLowerCase().includes("system prompt")){
       output="Response blocked due to security concerns.";
     }
+    logs.push({
+      input: message,
+      score,
+      status:score>3? "BLOCKED" : "SAFE", timestamp: new Date().toLocaleString(),});
     res.json({response:output});
   }
   catch(err){
