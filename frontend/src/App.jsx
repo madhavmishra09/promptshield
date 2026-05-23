@@ -4,6 +4,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/logs" element={<Logs />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   )
 }
