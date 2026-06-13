@@ -1,5 +1,8 @@
 import {Routes, Route} from 'react-router-dom'
 import Home from "./pages/home"
+import Dashboard from "./pages/dashboard"
+import Logs from "./pages/logs"
+import './App.css'
 function App() {
   return (
     <Routes>

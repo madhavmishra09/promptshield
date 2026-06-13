@@ -5,21 +5,21 @@ function Logs() {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
+    const fetchLogs = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/logs"
+        );
+
+        setLogs(res.data);
+
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchLogs();
   }, []);
-
-  const fetchLogs = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:5000/api/logs"
-      );
-
-      setLogs(res.data);
-
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white p-8">

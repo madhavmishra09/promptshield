@@ -5,16 +5,16 @@ function Dashboard() {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
+    const fetchLogs = async () => {
+      const res = await axios.get(
+        "http://localhost:5000/api/logs"
+      );
+
+      setLogs(res.data);
+    };
+
     fetchLogs();
   }, []);
-
-  const fetchLogs = async () => {
-    const res = await axios.get(
-      "http://localhost:5000/api/logs"
-    );
-
-    setLogs(res.data);
-  };
 
   const total = logs.length;
 
