@@ -20,7 +20,7 @@ export default function PromptInput({ setChat }) {
 
     try {
       const res = await axios.post(
-        "https://promptshield-0oum.onrender.com/api/chat",
+        "http://localhost:11434/api/chat",
         { message: trimmedMessage }
       );
 
