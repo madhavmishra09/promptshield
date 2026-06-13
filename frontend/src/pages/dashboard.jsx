@@ -7,7 +7,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchLogs = async () => {
       const res = await axios.get(
-        "https://promptshield-0oum.onrender.com/api/logs"
+        "http://localhost:11434/api/chat"
       );
 
       setLogs(res.data);
