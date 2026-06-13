@@ -42,7 +42,7 @@ router.post("/",async(req,res)=>{
     return res.json({response:"Hi. How can I help?"});
   }
   try{
-    const response=await axios.post("http://localhost:11434/api/chat",{
+    const response=await axios.post(" https://promptshield-0oum.onrender.com/api/chat",{
       model:"phi3:mini",
       messages:[
         {
